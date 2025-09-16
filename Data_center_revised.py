@@ -13,7 +13,7 @@ def load_data():
     df = df.rename(columns={
         "County FIPS": "FIPS",
         "EF": "EF",    # kg CO2e/kWh
-        "ACF": "ACF",  # Available Water Remaining (L/kWh)
+        "ACF": "ACF",  # Available Water Remaining (unitless for display)
         "SWI": "SWI",  # Scarce Water Index (L/kWh)
         df.columns[9]: "CountyState"
     })
@@ -57,7 +57,7 @@ else:
 
     st.write(f"**FIPS Code:** {fips_code}")
     st.write(f"**EF (Emission Factor):** {ef_value} kg CO₂e/kWh")
-    st.write(f"**ACF (Available Water Remaining):** {acf_value} L/kWh")
+    st.write(f"**ACF (Available Water Remaining):** {acf_value}")
     st.write(f"**SWI (Scarce Water Index):** {swi_value} L/kWh")
 
 # -------------------------------
