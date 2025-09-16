@@ -9,12 +9,12 @@ def load_data():
     # Use header=2 so row 3 becomes the column headers
     df = pd.read_csv("DATACENTER.csv", header=2, encoding="latin1")
 
-    # Rename useful columns (adjust these if headers differ slightly)
+    # Rename useful columns (adjust names if they differ slightly in your CSV)
     df = df.rename(columns={
         "County FIPS": "FIPS",
         "EF": "EF",    # kg CO2e/kWh
-        "ACF": "ACF",  # unitless fraction
-        "SWI": "SWI",  # L/kWh
+        "ACF": "ACF",  # Available Water Remaining (L/kWh)
+        "SWI": "SWI",  # Scarce Water Index (L/kWh)
         df.columns[9]: "CountyState"
     })
 
@@ -57,8 +57,8 @@ else:
 
     st.write(f"**FIPS Code:** {fips_code}")
     st.write(f"**EF (Emission Factor):** {ef_value} kg CO₂e/kWh")
-    st.write(f"**ACF (Adjustment Coefficient):** {acf_value} (unitless)")
-    st.write(f"**SWI (Source Water Intensity):** {swi_value} L/kWh")
+    st.write(f"**ACF (Available Water Remaining):** {acf_value} L/kWh")
+    st.write(f"**SWI (Scarce Water Index):** {swi_value} L/kWh")
 
 # -------------------------------
 # Input Section
