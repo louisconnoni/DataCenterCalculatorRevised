@@ -12,9 +12,10 @@ def load_data():
     # Rename useful columns (adjust names if they differ slightly in your CSV)
     df = df.rename(columns={
         "County FIPS": "FIPS",
-        "EF": "EF",    # kg CO2e/kWh
-        "ACF": "ACF",  # Available Water Remaining (unitless for display)
-        "SWI": "SWI",  # Scarce Water Index (L/kWh)
+        "EF": "EF",      # kg CO2e/kWh
+        "ACF": "ACF",    # Available Water Remaining
+        "SWI": "SWI",    # Scarce Water Index (L/kWh)
+        "EWIF": "EWIF",  # External Water Impact Factor (from column C)
         df.columns[9]: "CountyState"
     })
 
@@ -31,7 +32,7 @@ df = load_data()
 # Title and Intro
 # -------------------------------
 st.title("County Efficiency Calculator")
-st.write("This app calculates **CUE** and **WSUE** based on county FIPS, PUE, and WUE.")
+st.write("This app calculates **CUE**, **WSUE**, and **WUEsource** based on county FIPS, PUE, and WUE.")
 
 # -------------------------------
 # Dropdowns for State & County
@@ -54,11 +55,13 @@ else:
     ef_value = row["EF"]
     acf_value = row["ACF"]
     swi_value = row["SWI"]
+    ewif_value = row["EWIF"]
 
     st.write(f"**FIPS Code:** {fips_code}")
     st.write(f"**EF (Emission Factor):** {ef_value} kg CO₂e/kWh")
     st.write(f"**ACF (Available Water Remaining):** {acf_value}")
     st.write(f"**SWI (Scarce Water Index):** {swi_value} L/kWh")
+    st.write(f"**EWIF (External Water Impact Factor):** {ewif_value} L/kWh")
 
 # -------------------------------
 # Input Section
@@ -70,8 +73,10 @@ wue = st.number_input("Enter WUE (Water Usage Effectiveness) [L/kWh]:", min_valu
 # Calculation
 # -------------------------------
 if st.button("Run Calculation"):
-    cue = pue * ef_value                      # kg CO2e/kWh
-    wsue = acf_value * wue + swi_value * pue  # L/kWh
+    cue = pue * ef_value                           # kg CO2e/kWh
+    wsue = acf_value * wue + swi_value * pue       # L/kWh
+    wuesource = wue + (ewif_value * pue)           # L/kWh
 
     st.success(f"CUE = {cue:.3f} kg CO₂e/kWh")
     st.success(f"WSUE = {wsue:.3f} L/kWh")
+    st.success(f"WUEsource = {wuesource:.3f} L/kWh")
